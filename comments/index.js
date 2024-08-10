@@ -1,8 +1,10 @@
 const express = require('express')
 const { randomBytes } = require('crypto')
+const cors = require('cors')
 
 const app = express()
 app.use(express.json())
+app.use(cors())
 
 const commentsByPostId = {}
 
@@ -11,7 +13,8 @@ app.get('/posts/:id/comments', (req, res) => {
     res.send(commentsByPostId[postId])
 })
 
-app.post('/posts/:id/comments', (req, res) => {
+app.post('/posts/:id/comments', async (req, res) => {
+
     const { content } = req.body
     const postId = req.params.id
     const id = randomBytes(4).toString('hex')
@@ -21,15 +24,10 @@ app.post('/posts/:id/comments', (req, res) => {
         content
     }
 
-    const comments = commentsByPostId[postId]
-    if (!comments) {
-        commentsByPostId[postId] = [
-            comment
-        ]
-    }
-    else {
-        comments.unshift(comment)
-    }
+    const comments = commentsByPostId[postId] || []
+    comments.push(comment)
+    commentsByPostId[postId] = comments
+    await new Promise(res => setTimeout(res, 2000))
     res.status(201).send(comments)
 })
 
