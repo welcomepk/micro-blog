@@ -23,7 +23,7 @@ const PostsList = ({ fetchPosts, posts }) => {
     }
 
     return (
-        <ul className=''>
+        <ul className='grid md:grid-cols-2 lg:grid-cols-3 gap-3'>
             {/* <button onClick={clearPosts} className="bg-red-300 text-red-950 relative right-0 border border-red-500 px-3 py-1 rounded-md mb-4">Clear</button> */}
             {allPosts.map(post => {
                 return <Post key={post.id} post={post} />

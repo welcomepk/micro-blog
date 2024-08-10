@@ -36,7 +36,8 @@ const CreatePost = ({ fetchPosts }) => {
                     className='border w-full border-slate-300 py-2 px-4 '
                 />
             </div>
-            <button disabled={loading} type="submit" className='bg-slate-600 disabled:text-slate-300 p-2 rounded-md text-white font-semibold'>{loading ? "Submiting" : "Submit"}</button>
+            <button disabled={loading} type="submit"
+                className='bg-slate-600 disabled:text-slate-300 p-2 rounded-md text-white font-semibold'>{loading ? "Submiting" : "Submit"}</button>
         </form>
     )
 }

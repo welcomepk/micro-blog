@@ -15,7 +15,7 @@ const Card = ({ children, title }) => {
 function App() {
 
   const [posts, setPosts] = useState({})
-
+  const [loading, setLoading] = useState(false)
 
   const fetchPosts = async () => {
     const res = await axios.get('http://localhost:4000/posts')
@@ -23,7 +23,11 @@ function App() {
   }
 
   useEffect(() => {
-    fetchPosts()
+    (async () => {
+      setLoading(true)
+      await fetchPosts()
+      setLoading(false)
+    })();
 
   }, [])
 
@@ -31,8 +35,12 @@ function App() {
     <Card title={"Create Post"}>
       <CreatePost fetchPosts={fetchPosts} />
     </Card>
+
     <Card title={"All Posts"}>
-      <PostsList fetchPosts={fetchPosts} posts={posts} />
+      {
+        loading ? 'Loading posts ...' :
+          <PostsList fetchPosts={fetchPosts} posts={posts} />
+      }
     </Card>
   </div>
 }
