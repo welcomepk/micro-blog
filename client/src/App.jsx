@@ -1,9 +1,40 @@
+/* eslint-disable react/prop-types */
+import axios from "axios"
+import CreatePost from "./components/CreatePost"
+import PostsList from "./components/PostsList"
+import { useEffect, useState } from "react"
+
+const Card = ({ children, title }) => {
+  return <div className="border my-4 p-6 border-slate-400">
+    <h1 className="text-slate-900 text-2xl mb-6">{title}</h1>
+    {children}
+  </div>
+}
 
 
 function App() {
-  return <h1 className="text-3xl text-red-300 font-bold underline">
-    Hello world!
-  </h1>
+
+  const [posts, setPosts] = useState({})
+
+
+  const fetchPosts = async () => {
+    const res = await axios.get('http://localhost:4000/posts')
+    setPosts(res.data)
+  }
+
+  useEffect(() => {
+    fetchPosts()
+
+  }, [])
+
+  return <div className="max-w-[1200px] mx-auto p-6">
+    <Card title={"Create Post"}>
+      <CreatePost fetchPosts={fetchPosts} />
+    </Card>
+    <Card title={"All Posts"}>
+      <PostsList fetchPosts={fetchPosts} posts={posts} />
+    </Card>
+  </div>
 }
 
 export default App
