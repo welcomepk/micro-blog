@@ -1,35 +1,48 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
-import './App.css'
+/* eslint-disable react/prop-types */
+import axios from "axios"
+import CreatePost from "./components/CreatePost"
+import PostsList from "./components/PostsList"
+import { useEffect, useState } from "react"
+
+const Card = ({ children, title }) => {
+  return <div className="border my-4 p-6 border-slate-400">
+    <h1 className="text-slate-900 text-2xl mb-6">{title}</h1>
+    {children}
+  </div>
+}
+
 
 function App() {
-  const [count, setCount] = useState(0)
 
-  return (
-    <>
-      <div>
-        <a href="https://vitejs.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
-      </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.jsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
-    </>
-  )
+  const [posts, setPosts] = useState({})
+  const [loading, setLoading] = useState(false)
+
+  const fetchPosts = async () => {
+    const res = await axios.get('http://localhost:4000/posts')
+    setPosts(res.data)
+  }
+
+  useEffect(() => {
+    (async () => {
+      setLoading(true)
+      await fetchPosts()
+      setLoading(false)
+    })();
+
+  }, [])
+
+  return <div className="max-w-[1200px] mx-auto p-6">
+    <Card title={"Create Post"}>
+      <CreatePost fetchPosts={fetchPosts} />
+    </Card>
+
+    <Card title={"All Posts"}>
+      {
+        loading ? 'Loading posts ...' :
+          <PostsList fetchPosts={fetchPosts} posts={posts} />
+      }
+    </Card>
+  </div>
 }
 
 export default App
