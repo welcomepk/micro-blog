@@ -1,18 +1,29 @@
 const express = require('express')
 const { randomBytes } = require('crypto')
+const cors = require('cors')
 
 const app = express()
 app.use(express.json())
+app.use(cors())
 
-const posts = {};
+let posts = {};
 
-app.get('/posts', (req, res) => {
+app.delete('/posts/all', async (req, res) => {
+    // await new Promise(res => setTimeout(res, 4000))
+    posts = {}
+    return res.send('posts removed')
+})
+
+app.get('/posts', async (req, res) => {
+    await new Promise(res => setTimeout(res, 4000))
     res.send(posts)
 })
 
 app.post('/posts', (req, res) => {
     const id = randomBytes(4).toString('hex')
     const { title } = req.body;
+    console.log(title);
+
     posts[id] = {
         id,
         title
