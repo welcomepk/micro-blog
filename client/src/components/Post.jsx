@@ -25,10 +25,10 @@ const Post = ({ post }) => {
 
     return (
         <li
-            className="border border-slate-200 rounded-lg p-4 mb-2"
+            className="border border-slate-200 bg-slate-100  rounded-lg p-4 mb-2"
         >
             <h2 className="text-slate-700 text-xl font-semibold">{post.title}</h2>
-            <div className="mt-4 bg-slate-100 p-2">
+            <div className="mt-4  p-2">
                 <CreateComment fetchComments={fetchComments} postId={post.id} />
                 {
                     loading ? "Loading comments ..." :

@@ -1,7 +1,7 @@
 /* eslint-disable react/prop-types */
 
 const Comment = ({ comment }) => {
-    return <li className="text-slate-600 border-b border-slate-200 last:border-b-0 py-1">
+    return <li className="text-slate-600 border-b border-slate-300 last:border-b-0 py-1">
         {comment.content}
     </li>
 }
