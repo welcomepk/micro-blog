@@ -1,6 +1,7 @@
 const express = require('express')
 const { randomBytes } = require('crypto')
 const cors = require('cors')
+const axios = require('axios')
 
 const app = express()
 app.use(express.json())
@@ -27,11 +28,25 @@ app.post('/posts/:id/comments', async (req, res) => {
     const comments = commentsByPostId[postId] || []
     comments.push(comment)
     commentsByPostId[postId] = comments
-    await new Promise(res => setTimeout(res, 2000))
+    await fetch('http://localhost:4040/events', {
+        method: 'POST',
+        headers: {
+            "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+            type: 'CommentCreated',
+            data: comment
+        })
+    })
     res.status(201).send(comments)
 })
 
+app.post('/events', (req, res) => {
+    const { type } = req.body
+    console.log('recived', req.body);
+    res.send({})
+})
 
-app.listen(4040, () => {
-    console.log('comments server is up on port', 4040);
+app.listen(4001, () => {
+    console.log('comments server is up on port', 4001);
 })
