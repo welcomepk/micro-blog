@@ -6,21 +6,31 @@ app.use(express.json())
 
 app.post('/events', async (req, res) => {
     const event = req.body
+    console.log("event-bud event ===> ", event);
+
     try {
-        await fetch('http://localhost:4000/events', {
+        fetch('http://localhost:4000/events', {
             method: 'POST',
             headers: {
                 "Content-Type": "application/json",
             },
             body: JSON.stringify(event)
         })
-        await fetch('http://localhost:4001/events', {
+        fetch('http://localhost:4001/events', {
             method: 'POST',
             headers: {
                 "Content-Type": "application/json",
             },
             body: JSON.stringify(event)
         })
+        fetch('http://localhost:4002/events', {
+            method: 'POST',
+            headers: {
+                "Content-Type": "application/json",
+            },
+            body: JSON.stringify(event)
+        })
+
         res.send({
             status: 'OK'
         })

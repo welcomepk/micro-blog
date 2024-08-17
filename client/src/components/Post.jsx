@@ -5,7 +5,7 @@ import axios from "axios"
 /* eslint-disable react/prop-types */
 const Post = ({ post }) => {
 
-    const [comments, setComments] = useState([])
+    const [comments, setComments] = useState(post?.comments || [])
     const [loading, setLoading] = useState(false)
 
     const fetchComments = async () => {
@@ -13,15 +13,15 @@ const Post = ({ post }) => {
         setComments(res.data)
     }
 
-    useEffect(() => {
-        (async () => {
-            setLoading(true)
-            await fetchComments()
-            setLoading(false)
-        })()
-    }, [])
+    // useEffect(() => {
+    //     (async () => {
+    //         setLoading(true)
+    //         await fetchComments()
+    //         setLoading(false)
+    //     })()
+    // }, [])
 
-    console.log(comments);
+    // console.log(comments);
 
     return (
         <li
