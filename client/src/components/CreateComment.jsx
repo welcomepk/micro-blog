@@ -11,7 +11,7 @@ const CreateComment = ({ postId, fetchComments }) => {
         if (!content) return
         try {
             setLoading(true)
-            await axios.post(`http://localhost:4040/posts/${postId}/comments`, {
+            await axios.post(`http://localhost:4001/posts/${postId}/comments`, {
                 content
             })
             await fetchComments()

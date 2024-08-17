@@ -9,7 +9,7 @@ const Post = ({ post }) => {
     const [loading, setLoading] = useState(false)
 
     const fetchComments = async () => {
-        const res = await axios.get(`http://localhost:4040/posts/${post.id}/comments`)
+        const res = await axios.get(`http://localhost:4001/posts/${post.id}/comments`)
         setComments(res.data)
     }
 
