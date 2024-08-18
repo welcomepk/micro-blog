@@ -9,6 +9,8 @@ app.post('/events', async (req, res) => {
     console.log("event-bud event ===> ", event);
 
     try {
+
+        // posts service
         fetch('http://localhost:4000/events', {
             method: 'POST',
             headers: {
@@ -16,6 +18,8 @@ app.post('/events', async (req, res) => {
             },
             body: JSON.stringify(event)
         })
+
+        // comments service
         fetch('http://localhost:4001/events', {
             method: 'POST',
             headers: {
@@ -23,7 +27,18 @@ app.post('/events', async (req, res) => {
             },
             body: JSON.stringify(event)
         })
+
+        // query service
         fetch('http://localhost:4002/events', {
+            method: 'POST',
+            headers: {
+                "Content-Type": "application/json",
+            },
+            body: JSON.stringify(event)
+        })
+
+        // moderation service
+        fetch('http://localhost:4003/events', {
             method: 'POST',
             headers: {
                 "Content-Type": "application/json",
@@ -34,6 +49,7 @@ app.post('/events', async (req, res) => {
         res.send({
             status: 'OK'
         })
+
     } catch (error) {
         console.log("event-bus ===> ", error.message || error);
         res.send({

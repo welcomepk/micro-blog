@@ -13,6 +13,7 @@ app.get('/posts', (req, res) => {
 
 app.post('/events', (req, res) => {
     const { type, data } = req.body
+    console.log("event recived ==> ", req.body);
 
     if (type === 'PostCreated') {
         const { id, title } = data
@@ -21,19 +22,28 @@ app.post('/events', (req, res) => {
             title,
             comments: []
         }
-    } else if (type === 'CommentCreated') {
-        const { id, post_id, content } = data
+    }
+    if (type === 'CommentCreated') {
+        const { id, post_id, content, status } = data
         const post = posts[post_id]
         if (post) {
             post.comments.push({
-                id, content, post_id
+                id, content, post_id, status
             })
         } else {
             console.log("no post with id", post_id);
             return res.status(400).send('error')
         }
     }
-    console.log(posts);
+    if (type === 'CommentUpdated') {
+        const { id, content, post_id, status } = data
+        const post = posts[post_id]
+        const comment = post.comments.find(comment => comment.id === id)
+        comment.content = content
+        comment.status = status
+    }
+
+    console.log(JSON.stringify(posts));
 
     res.send('OK')
 })

@@ -14,6 +14,7 @@ app.get('/posts/:id/comments', (req, res) => {
     res.send(commentsByPostId[postId])
 })
 
+// create a comment
 app.post('/posts/:id/comments', async (req, res) => {
 
     const { content } = req.body
@@ -22,12 +23,14 @@ app.post('/posts/:id/comments', async (req, res) => {
     const comment = {
         id,
         post_id: postId,
-        content
+        content,
+        status: 'pending' // pending | rejected | approved
     }
 
     const comments = commentsByPostId[postId] || []
     comments.push(comment)
     commentsByPostId[postId] = comments
+
     await fetch('http://localhost:4040/events', {
         method: 'POST',
         headers: {
@@ -41,9 +44,27 @@ app.post('/posts/:id/comments', async (req, res) => {
     res.status(201).send(comments)
 })
 
-app.post('/events', (req, res) => {
-    const { type } = req.body
-    console.log('recived', req.body);
+app.post('/events', async (req, res) => {
+    const { type, data } = req.body
+
+
+    if (type === 'CommentModerated') {
+        const comments = commentsByPostId[data.post_id]
+        const comment = comments.find(comment => comment.id === data.post_id)
+        comment.status = data.status
+
+        await fetch('http://localhost:4040/events', {
+            method: 'POST',
+            headers: {
+                "Content-Type": "application/json",
+            },
+            body: JSON.stringify({
+                type: 'CommentUpdated',
+                data: comment
+            })
+        })
+    }
+
     res.send({})
 })
 

@@ -29,10 +29,6 @@ app.post('/posts', async (req, res) => {
         title
     }
     try {
-        // await axios.post('http://localhost:4040/events', {
-        //     type: 'PostCreated',
-        //     data: posts[id]
-        // })
 
         const res = await fetch('http://localhost:4040/events', {
             method: 'POST',
@@ -44,8 +40,6 @@ app.post('/posts', async (req, res) => {
                 data: posts[id]
             })
         })
-        const data = await res.json()
-        console.log(data);
 
     } catch (error) {
         console.log(error.message || error);
