@@ -8,6 +8,8 @@ app.use(express.json())
 const posts = {}
 
 app.get('/posts', (req, res) => {
+    console.log(posts);
+
     return res.send(posts)
 })
 

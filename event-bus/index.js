@@ -20,7 +20,7 @@ app.post('/events', async (req, res) => {
         })
 
         // comments service
-        fetch('http://localhost:4001/events', {
+        await fetch('http://localhost:4001/events', {
             method: 'POST',
             headers: {
                 "Content-Type": "application/json",
