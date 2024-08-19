@@ -14,6 +14,7 @@ app.post('/events', async (req, res) => {
         const content = data.content
         const status = content.includes('ass') ? "rejected" : "approved";
 
+        await new Promise(res => setTimeout(res, 10000))
 
         await fetch('http://localhost:4040/events', {
             method: 'POST',
