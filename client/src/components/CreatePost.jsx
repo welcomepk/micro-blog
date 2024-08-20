@@ -1,11 +1,12 @@
 /* eslint-disable react/prop-types */
 
-import { useState } from 'react'
+import { useRef, useState } from 'react'
 import axios from 'axios'
 
 const CreatePost = ({ fetchPosts }) => {
     const [title, setTitle] = useState('')
     const [loading, setLoading] = useState(false)
+    const postInputRef = useRef(null)
 
     const handleSubmit = async (e) => {
         e.preventDefault()
@@ -21,6 +22,7 @@ const CreatePost = ({ fetchPosts }) => {
             setLoading(false)
         }
         setTitle('')
+        postInputRef.current.focus()
     }
 
     return (
@@ -34,6 +36,7 @@ const CreatePost = ({ fetchPosts }) => {
                     placeholder='Title'
                     id='title_input'
                     className='border w-full border-slate-300 py-2 px-4 '
+                    ref={postInputRef}
                 />
             </div>
             <button disabled={loading} type="submit"

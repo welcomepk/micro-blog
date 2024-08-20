@@ -4,9 +4,11 @@ const axios = require("axios")
 const app = express()
 app.use(express.json())
 
+const events = []
+
 app.post('/events', async (req, res) => {
     const event = req.body
-    console.log("event-bud event ===> ", event);
+    events.push(event)
 
     try {
 
@@ -57,6 +59,11 @@ app.post('/events', async (req, res) => {
         })
     }
 })
+
+app.get('/events', async (req, res) => {
+    return res.send(events)
+})
+
 app.listen(4040, () => {
     console.log('events server is up on port', 4040);
 })
