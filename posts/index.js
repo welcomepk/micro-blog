@@ -38,11 +38,13 @@ app.post('/posts', async (req, res) => {
 
 app.post('/events', (req, res) => {
     const { type } = req.body
-    console.log('recived', req.body);
-    res.send({})
+    res.send({
+        message: 'post created'
+    })
 })
 
 const PORT = process.env.PORT || 4000
 app.listen(PORT, () => {
+    console.log('v:latest');
     console.log('post server is up on port', PORT);
 })

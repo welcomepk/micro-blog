@@ -8,54 +8,53 @@ app.post('/events', async (req, res) => {
     const event = req.body
     console.log("event-bud event ===> ", event);
 
-    try {
 
-        // posts service
-        fetch('http://localhost:4000/events', {
-            method: 'POST',
-            headers: {
-                "Content-Type": "application/json",
-            },
-            body: JSON.stringify(event)
+    // posts service
+    axios.post('http://localhost:4000/events', event)
+        .then(res => {
+            console.log("response from posts:4000", res.data);
+
+        })
+        .catch(err => {
+            console.error('Failed to send event to http://localhost:4000:', err.message)
         })
 
-        // comments service
-        await fetch('http://localhost:4001/events', {
-            method: 'POST',
-            headers: {
-                "Content-Type": "application/json",
-            },
-            body: JSON.stringify(event)
+    // comments service
+    axios.post('http://localhost:4001/events', event)
+        .then(res => {
+            console.log("response from comments:4001", res.data);
+
+        })
+        .catch(err => {
+            console.error('Failed to send event to http://localhost:4001:', err.message)
         })
 
-        // query service
-        fetch('http://localhost:4002/events', {
-            method: 'POST',
-            headers: {
-                "Content-Type": "application/json",
-            },
-            body: JSON.stringify(event)
+
+    // query service
+    axios.post('http://localhost:4002/events', event)
+        .then(res => {
+            console.log("response from query:4002", res.data);
+
+        })
+        .catch(err => {
+            console.error('Failed to send event to http://localhost:4002:', err.message)
         })
 
-        // moderation service
-        fetch('http://localhost:4003/events', {
-            method: 'POST',
-            headers: {
-                "Content-Type": "application/json",
-            },
-            body: JSON.stringify(event)
+
+    // moderation service
+    axios.post('http://localhost:4003/events', event)
+        .then(res => {
+            console.log("response from moderation:4003", res.data);
+
+        })
+        .catch(err => {
+            console.error('Failed to send event to http://localhost:4003:', err.message)
         })
 
-        res.send({
-            status: 'OK'
-        })
 
-    } catch (error) {
-        console.log("event-bus ===> ", error.message || error);
-        res.send({
-            error: error.message || "Something went wrong"
-        })
-    }
+    res.send({
+        status: 'OK'
+    })
 })
 app.listen(4040, () => {
     console.log('events server is up on port', 4040);
