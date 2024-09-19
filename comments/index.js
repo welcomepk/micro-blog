@@ -33,7 +33,7 @@ app.post('/posts/:id/comments', async (req, res) => {
 
     try {
 
-        await fetch('http://localhost:4040/events', {
+        fetch('http://localhost:4040/events', {
             method: 'POST',
             headers: {
                 "Content-Type": "application/json",
@@ -50,6 +50,7 @@ app.post('/posts/:id/comments', async (req, res) => {
 
     res.status(201).send(comment)
 })
+
 
 app.post('/events', async (req, res) => {
     const { type, data } = req.body

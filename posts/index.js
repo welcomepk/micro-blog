@@ -10,13 +10,11 @@ app.use(cors())
 let posts = {};
 
 app.delete('/posts/all', async (req, res) => {
-    // await new Promise(res => setTimeout(res, 4000))
     posts = {}
     return res.send('posts removed')
 })
 
 app.get('/posts', async (req, res) => {
-    // await new Promise(res => setTimeout(res, 4000))
     res.send(posts)
 })
 
@@ -28,31 +26,25 @@ app.post('/posts', async (req, res) => {
         id,
         title
     }
-    try {
+    axios.post('http://localhost:4040/events', {
+        type: 'PostCreated',
+        data: posts[id]
+    }).catch(err => {
+        console.error('Failed to send event to http://localhost:4040:', err.message)
+    })
 
-        const res = await fetch('http://localhost:4040/events', {
-            method: 'POST',
-            headers: {
-                "Content-Type": "application/json",
-            },
-            body: JSON.stringify({
-                type: 'PostCreated',
-                data: posts[id]
-            })
-        })
-
-    } catch (error) {
-        console.log(error.message || error);
-    }
     res.status(201).send(posts[id])
 })
 
 app.post('/events', (req, res) => {
     const { type } = req.body
-    console.log('recived', req.body);
-    res.send({})
+    res.send({
+        message: 'post created'
+    })
 })
 
-app.listen(4000, () => {
-    console.log('post server is up on port', 4000);
+const PORT = process.env.PORT || 4000
+app.listen(PORT, () => {
+    console.log('v:latest');
+    console.log('post server is up on port', PORT);
 })
