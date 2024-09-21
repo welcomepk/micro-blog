@@ -10,46 +10,46 @@ app.post('/events', async (req, res) => {
 
 
     // posts service
-    axios.post('http://localhost:4000/events', event)
+    axios.post('http://posts-clusterip-srv:4000/events', event)
         .then(res => {
             console.log("response from posts:4000", res.data);
 
         })
         .catch(err => {
-            console.error('Failed to send event to http://localhost:4000:', err.message)
+            console.error('Failed to send event to http://posts-clusterip-srv:4000:', err.message)
         })
 
-    // comments service
-    axios.post('http://localhost:4001/events', event)
-        .then(res => {
-            console.log("response from comments:4001", res.data);
+    // // comments service
+    // axios.post('http://localhost:4001/events', event)
+    //     .then(res => {
+    //         console.log("response from comments:4001", res.data);
 
-        })
-        .catch(err => {
-            console.error('Failed to send event to http://localhost:4001:', err.message)
-        })
-
-
-    // query service
-    axios.post('http://localhost:4002/events', event)
-        .then(res => {
-            console.log("response from query:4002", res.data);
-
-        })
-        .catch(err => {
-            console.error('Failed to send event to http://localhost:4002:', err.message)
-        })
+    //     })
+    //     .catch(err => {
+    //         console.error('Failed to send event to http://localhost:4001:', err.message)
+    //     })
 
 
-    // moderation service
-    axios.post('http://localhost:4003/events', event)
-        .then(res => {
-            console.log("response from moderation:4003", res.data);
+    // // query service
+    // axios.post('http://localhost:4002/events', event)
+    //     .then(res => {
+    //         console.log("response from query:4002", res.data);
 
-        })
-        .catch(err => {
-            console.error('Failed to send event to http://localhost:4003:', err.message)
-        })
+    //     })
+    //     .catch(err => {
+    //         console.error('Failed to send event to http://localhost:4002:', err.message)
+    //     })
+
+
+    // // moderation service
+    // axios.post('http://localhost:4003/events', event)
+    //     .then(res => {
+    //         console.log("response from moderation:4003", res.data);
+
+    //     })
+    //     .catch(err => {
+    //         console.error('Failed to send event to http://localhost:4003:', err.message)
+    //     })
 
 
     res.send({
