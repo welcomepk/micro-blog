@@ -26,11 +26,11 @@ app.post('/posts', async (req, res) => {
         id,
         title
     }
-    axios.post('http://localhost:4040/events', {
+    axios.post('http://event-bus-srv:4040/events', {
         type: 'PostCreated',
         data: posts[id]
     }).catch(err => {
-        console.error('Failed to send event to http://localhost:4040:', err.message)
+        console.error('Failed to send event to http://event-bus-srv:4040:', err.message)
     })
 
     res.status(201).send(posts[id])
