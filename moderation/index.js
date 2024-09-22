@@ -14,7 +14,7 @@ app.post('/events', async (req, res) => {
         const content = data.content
         const status = content.includes('ass') ? "rejected" : "approved";
 
-        await fetch('http://localhost:4040/events', {
+        await fetch('http://event-bus-srv:4040/events', {
             method: 'POST',
             headers: {
                 "Content-Type": "application/json",

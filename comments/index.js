@@ -33,7 +33,7 @@ app.post('/posts/:id/comments', async (req, res) => {
 
     try {
 
-        fetch('http://localhost:4040/events', {
+        fetch('http://event-bus-srv:4040/events', {
             method: 'POST',
             headers: {
                 "Content-Type": "application/json",
@@ -55,14 +55,12 @@ app.post('/posts/:id/comments', async (req, res) => {
 app.post('/events', async (req, res) => {
     const { type, data } = req.body
 
-    console.log(commentsByPostId);
-
     if (type === 'CommentModerated') {
         const comments = commentsByPostId[data.post_id]
         const comment = comments.find(comment => comment.id === data.id)
         comment.status = data.status
 
-        await fetch('http://localhost:4040/events', {
+        await fetch('http://event-bus-srv:4040/events', {
             method: 'POST',
             headers: {
                 "Content-Type": "application/json",

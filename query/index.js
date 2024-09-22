@@ -33,8 +33,6 @@ const handleEvent = (type, data) => {
 }
 
 app.get('/posts', (req, res) => {
-    console.log(posts);
-
     return res.send(posts)
 })
 
@@ -50,7 +48,7 @@ app.listen(4002, async () => {
     console.log('query service up on port', 4002);
 
     try {
-        const res = await fetch('http://localhost:4040/events')
+        const res = await fetch('http://event-bus-srv:4040/events')
         const data = await res.json()
 
 
