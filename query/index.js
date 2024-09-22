@@ -7,16 +7,7 @@ app.use(express.json())
 
 const posts = {}
 
-app.get('/posts', (req, res) => {
-    console.log(posts);
-
-    return res.send(posts)
-})
-
-app.post('/events', (req, res) => {
-    const { type, data } = req.body
-    console.log("event recived ==> ", req.body);
-
+const handleEvent = (type, data) => {
     if (type === 'PostCreated') {
         const { id, title } = data
         posts[id] = {
@@ -28,14 +19,9 @@ app.post('/events', (req, res) => {
     if (type === 'CommentCreated') {
         const { id, post_id, content, status } = data
         const post = posts[post_id]
-        if (post) {
-            post.comments.push({
-                id, content, post_id, status
-            })
-        } else {
-            console.log("no post with id", post_id);
-            return res.status(400).send('error')
-        }
+        post.comments.push({
+            id, content, post_id, status
+        })
     }
     if (type === 'CommentUpdated') {
         const { id, content, post_id, status } = data
@@ -44,13 +30,35 @@ app.post('/events', (req, res) => {
         comment.content = content
         comment.status = status
     }
+}
 
-    console.log(JSON.stringify(posts));
+app.get('/posts', (req, res) => {
+    console.log(posts);
 
+    return res.send(posts)
+})
+
+app.post('/events', (req, res) => {
+    const { type, data } = req.body
+    console.log("event recived ==> ", req.body);
+
+    handleEvent(type, data)
     res.send('OK')
 })
 
-app.listen(4002, () => {
+app.listen(4002, async () => {
     console.log('query service up on port', 4002);
 
+    try {
+        const res = await fetch('http://localhost:4040/events')
+        const data = await res.json()
+
+
+        for (e of data.events) {
+            console.log('processing event', e.type);
+            handleEvent(e.type, e.data)
+        }
+    } catch (error) {
+        console.log(error.message || error);
+    }
 })

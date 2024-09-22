@@ -4,19 +4,26 @@ const axios = require("axios")
 const app = express()
 app.use(express.json())
 
+const events = []
+
+app.get('/events', (req, res) => {
+    console.log(events);
+    return res.send({ events })
+})
+
 app.post('/events', async (req, res) => {
     const event = req.body
-    console.log("event-bud event ===> ", event);
-
+    console.log("event-bus event ===> ", event);
+    events.push(event)
 
     // posts service
-    axios.post('http://posts-clusterip-srv:4000/events', event)
+    axios.post('http://localhost:4000/events', event)
         .then(res => {
             console.log("response from posts:4000", res.data);
 
         })
         .catch(err => {
-            console.error('Failed to send event to http://posts-clusterip-srv:4000:', err.message)
+            console.error('Failed to send event to http://localhost:4000:', err.message)
         })
 
     // // comments service
@@ -30,15 +37,15 @@ app.post('/events', async (req, res) => {
     //     })
 
 
-    // // query service
-    // axios.post('http://localhost:4002/events', event)
-    //     .then(res => {
-    //         console.log("response from query:4002", res.data);
+    // query service
+    axios.post('http://localhost:4002/events', event)
+        .then(res => {
+            console.log("response from query:4002", res.data);
 
-    //     })
-    //     .catch(err => {
-    //         console.error('Failed to send event to http://localhost:4002:', err.message)
-    //     })
+        })
+        .catch(err => {
+            console.error('Failed to send event to http://localhost:4002:', err.message)
+        })
 
 
     // // moderation service
